@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>5EE ARCHIVE</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Barlow:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F2ED;
+  --bg2:#EDE9E2;
+  --bg3:#E4E0D8;
+  --fg:#141412;
+  --fg2:#5C5A54;
+  --fg3:#9A9890;
+  --rule:#D8D4CC;
+  --rule2:#C8C4BC;
+  --white:#FFFFFF;
+  --mono:'IBM Plex Mono',monospace;
+  --cond:'Barlow Condensed',sans-serif;
+  --body:'Barlow',sans-serif;
+  --serif:'Playfair Display',serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-weight:300;line-height:1.6;min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit;background:none;border:none;color:inherit;padding:0}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+/* ── NAV ── */
+.nav{
+  height:56px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 2.5rem;border-bottom:1px solid var(--rule);
+  position:sticky;top:0;z-index:200;background:var(--bg);
+}
+.nav-logo{
+  font-family:var(--cond);font-weight:900;font-size:1rem;
+  letter-spacing:0.2em;color:var(--fg);text-transform:uppercase;
+}
+.nav-links{display:flex;gap:0;list-style:none}
+.nav-links a{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.16em;color:var(--fg3);
+  padding:0 1.1rem;height:56px;display:flex;align-items:center;
+  border-right:1px solid var(--rule);transition:color 0.12s,background 0.12s;
+}
+.nav-links a:first-child{border-left:1px solid var(--rule)}
+.nav-links a:hover,.nav-links a.active{color:var(--fg);background:var(--bg2)}
+.nav-search-btn{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--fg3);
+  height:56px;padding:0 1.4rem;border-left:1px solid var(--rule);
+  display:flex;align-items:center;gap:9px;transition:color 0.12s,background 0.12s;
+}
+.nav-search-btn:hover{color:var(--fg);background:var(--bg2)}
+
+/* ── PAGES ── */
+.page{display:none}.page.active{display:block}
+
+/* ── HERO QUOTE ── */
+.hero-quote{
+  padding:8rem 2.5rem 7rem;
+  display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.5rem;
+  border-bottom:1px solid var(--rule);
+}
+.hero-rule-top{width:1px;height:64px;background:var(--rule2);margin-bottom:0.5rem}
+.hero-main{
+  font-family:var(--cond);font-weight:900;
+  font-size:clamp(3rem,6vw,5.5rem);
+  letter-spacing:0.01em;text-transform:uppercase;line-height:0.93;max-width:860px;
+}
+.hero-main em{font-style:italic;font-family:var(--serif);font-weight:700;color:var(--fg2);text-transform:none}
+.hero-sub{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.18em;
+  color:var(--fg3);text-transform:uppercase;max-width:440px;line-height:2;
+  margin-top:0.25rem;
+}
+.hero-rule-bot{width:40px;height:1px;background:var(--rule2);margin-top:0.5rem}
+
+/* ── CATEGORY SECTION ── */
+.cat-section{padding:5rem 2.5rem 6rem;border-bottom:1px solid var(--rule)}
+.cat-section-label{
+  font-family:var(--cond);font-weight:900;font-size:1.4rem;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--fg);text-align:center;margin-bottom:3.5rem;
+}
+.cat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:16px;max-width:1100px;margin:0 auto;
+}
+.cat-card{
+  border-radius:12px;height:320px;position:relative;overflow:hidden;
+  cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;padding:1.25rem;
+}
+.cat-card-img{position:absolute;inset:0}
+.cat-card-img img{transition:transform 0.5s,opacity 0.3s}
+.cat-card:hover .cat-card-img img{transform:scale(1.06);opacity:0.88}
+.cat-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.05) 55%);
+  pointer-events:none;
+}
+.cat-card-body{position:relative;z-index:1}
+.cat-pill{
+  display:inline-block;font-family:var(--mono);font-size:9px;font-weight:500;
+  letter-spacing:0.16em;text-transform:uppercase;
+  background:rgba(255,255,255,0.92);color:#111;
+  padding:5px 14px;border-radius:999px;line-height:1;
+}
+
+/* ── FEATURED STORY ── */
+.featured-section{border-bottom:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr}
+.featured-img{border-right:1px solid var(--rule);height:540px;overflow:hidden;background:var(--bg3)}
+.featured-img img{transition:transform 0.4s,opacity 0.3s}
+.featured-img:hover img{transform:scale(1.03)}
+.featured-text{padding:3.5rem 3.5rem;display:flex;flex-direction:column;justify-content:space-between}
+.featured-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.2em;color:var(--fg3);
+  display:flex;align-items:center;gap:12px;
+}
+.featured-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+.featured-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:1.25rem;padding:2.5rem 0}
+.featured-code{font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--fg3)}
+.featured-cat{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:var(--fg2);
+  border:1px solid var(--rule2);padding:3px 10px;display:inline-block;width:fit-content;
+}
+.featured-title{
+  font-family:var(--cond);font-weight:900;font-size:clamp(1.8rem,3vw,2.8rem);
+  text-transform:uppercase;letter-spacing:0.02em;line-height:0.97;
+  cursor:pointer;transition:color 0.12s;color:var(--fg);
+}
+.featured-title:hover{color:var(--fg2)}
+.featured-excerpt{font-size:13px;color:var(--fg2);line-height:1.85;max-width:420px}
+.featured-meta{
+  font-family:var(--mono);font-size:9px;color:var(--fg3);
+  letter-spacing:0.1em;display:flex;align-items:center;gap:1.5rem;
+  padding-top:2rem;border-top:1px solid var(--rule);
+}
+.featured-read-btn{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.18em;color:var(--fg2);
+  border:1px solid var(--rule2);padding:10px 20px;
+  transition:color 0.12s,border-color 0.12s,background 0.12s;
+}
+.featured-read-btn:hover{color:var(--fg);border-color:var(--fg);background:var(--bg2)}
+
+/* ── CATEGORY FEED (Instagram-style) ── */
+.feed-page{}
+.feed-header{
+  padding:2rem 2.5rem;border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.feed-header-left{display:flex;align-items:center;gap:1.5rem}
+.feed-back{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--fg3);
+  display:flex;align-items:center;gap:8px;transition:color 0.12s;
+}
+.feed-back:hover{color:var(--fg)}
+.feed-title{
+  font-family:var(--cond);font-weight:900;font-size:1.8rem;
+  text-transform:uppercase;letter-spacing:0.06em;line-height:1;
+}
+.feed-count{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:var(--fg3)}
+.feed-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:3px;background:var(--rule);
+  border-bottom:1px solid var(--rule);
+}
+.feed-tile{
+  aspect-ratio:1/1;position:relative;overflow:hidden;
+  cursor:pointer;background:var(--bg3);
+}
+.feed-tile img{transition:transform 0.4s,opacity 0.3s;opacity:0.92}
+.feed-tile:hover img{transform:scale(1.05);opacity:1}
+.feed-tile-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0);
+  display:flex;align-items:flex-end;padding:1rem;
+  transition:background 0.25s;
+}
+.feed-tile:hover .feed-tile-overlay{background:rgba(0,0,0,0.28)}
+.feed-tile-title{
+  font-family:var(--cond);font-weight:800;font-size:0.95rem;
+  text-transform:uppercase;letter-spacing:0.04em;color:#fff;
+  line-height:1.1;opacity:0;transform:translateY(6px);
+  transition:opacity 0.22s,transform 0.22s;
+}
+.feed-tile:hover .feed-tile-title{opacity:1;transform:translateY(0)}
+
+/* ── ARTICLE VIEW ── */
+.art-nav{
+  padding:1.25rem 2.5rem;border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:1rem;background:var(--bg);
+}
+.back-btn{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.15em;
+  color:var(--fg3);display:flex;align-items:center;gap:8px;transition:color 0.12s;
+}
+.back-btn:hover{color:var(--fg)}
+.art-crumb{font-family:var(--mono);font-size:9px;color:var(--fg3);letter-spacing:0.08em}
+
+/* article layout — editorial scattered */
+.art-layout{background:var(--bg)}
+
+/* BLOCK: full-bleed hero image */
+.art-hero-img{
+  width:100%;height:85vh;max-height:700px;overflow:hidden;
+  position:relative;
+}
+.art-hero-img img{width:100%;height:100%;object-fit:cover}
+.art-hero-caption{
+  position:absolute;bottom:2rem;right:2.5rem;
+  font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:rgba(255,255,255,0.55);
+}
+
+/* BLOCK: title block */
+.art-title-block{
+  max-width:860px;margin:0 auto;
+  padding:4rem 2.5rem 3rem;
+  display:flex;flex-direction:column;gap:1.25rem;
+  border-bottom:1px solid var(--rule);
+}
+.art-code{font-family:var(--mono);font-size:9px;letter-spacing:0.2em;color:var(--fg3)}
+.art-title{
+  font-family:var(--cond);font-weight:900;
+  font-size:clamp(2.8rem,5.5vw,5rem);
+  text-transform:uppercase;letter-spacing:-0.01em;line-height:0.92;color:var(--fg);
+}
+.art-meta-row{
+  display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
+  padding-top:1rem;border-top:1px solid var(--rule);
+}
+.art-meta-item{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;color:var(--fg3)}
+.art-tag{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.12em;
+  padding:3px 10px;border:1px solid var(--rule2);color:var(--fg2);
+}
+
+/* BLOCK: opening text */
+.art-text-block{
+  max-width:680px;margin:0 auto;padding:3.5rem 2.5rem;
+}
+.art-text-block p{
+  font-family:var(--body);font-size:16px;font-weight:300;
+  color:var(--fg2);line-height:1.9;margin-bottom:1.5rem;
+}
+.art-text-block p:first-child::first-letter{
+  font-family:var(--cond);font-weight:900;font-size:4.5rem;line-height:0.8;
+  float:left;margin:0.1em 0.1em 0 0;color:var(--fg);
+}
+.art-text-block h2{
+  font-family:var(--cond);font-weight:900;font-size:1.6rem;
+  text-transform:uppercase;letter-spacing:0.04em;color:var(--fg);
+  margin:2.5rem 0 0.75rem;line-height:1;
+}
+.art-text-block blockquote{
+  border-left:2px solid var(--rule2);padding-left:1.5rem;margin:2rem 0;
+  font-family:var(--serif);font-style:italic;font-size:1.05rem;
+  color:var(--fg2);line-height:1.75;
+}
+
+/* BLOCK: pull quote — full width */
+.art-pull{
+  padding:5rem 2.5rem;
+  text-align:center;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  background:var(--bg2);
+}
+.art-pull-text{
+  font-family:var(--cond);font-weight:900;
+  font-size:clamp(2rem,4.5vw,4rem);
+  text-transform:uppercase;letter-spacing:0.02em;line-height:1;
+  color:var(--fg);max-width:900px;margin:0 auto;
+}
+.art-pull-text em{font-style:italic;font-family:var(--serif);text-transform:none;color:var(--fg2)}
+
+/* BLOCK: two-col image + text */
+.art-split{
+  display:grid;grid-template-columns:1fr 1fr;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+}
+.art-split-img{height:520px;overflow:hidden;background:var(--bg3)}
+.art-split-img img{width:100%;height:100%;object-fit:cover}
+.art-split-text{
+  padding:3.5rem;display:flex;flex-direction:column;justify-content:center;
+  border-left:1px solid var(--rule);
+}
+.art-split-text p{
+  font-size:15px;color:var(--fg2);line-height:1.9;margin-bottom:1.25rem;
+}
+.art-split-text h2{
+  font-family:var(--cond);font-weight:900;font-size:1.5rem;
+  text-transform:uppercase;letter-spacing:0.04em;color:var(--fg);
+  margin-bottom:1.25rem;line-height:1;
+}
+.art-split.rev .art-split-img{order:2}
+.art-split.rev .art-split-text{border-left:none;border-right:1px solid var(--rule)}
+
+/* BLOCK: triple image strip */
+.art-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:3px;background:var(--rule);
+  border-top:1px solid var(--rule);
+}
+.art-strip-img{height:340px;overflow:hidden;background:var(--bg3)}
+.art-strip-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s}
+.art-strip-img:hover img{transform:scale(1.04)}
+
+/* BLOCK: wide image with side caption */
+.art-wide{
+  display:grid;grid-template-columns:1fr 220px;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+}
+.art-wide-img{height:480px;overflow:hidden;background:var(--bg3)}
+.art-wide-img img{width:100%;height:100%;object-fit:cover}
+.art-wide-caption{
+  padding:2rem 1.75rem;display:flex;flex-direction:column;justify-content:flex-end;
+  border-left:1px solid var(--rule);
+}
+.art-wide-caption p{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.08em;color:var(--fg3);line-height:1.7;
+}
+
+/* BLOCK: full-bleed closing image */
+.art-closing{
+  width:100%;height:60vh;overflow:hidden;
+  border-top:1px solid var(--rule);
+}
+.art-closing img{width:100%;height:100%;object-fit:cover;opacity:0.85}
+
+/* BLOCK: end stamp */
+.art-end{
+  max-width:680px;margin:0 auto;padding:3rem 2.5rem 5rem;
+  display:flex;flex-direction:column;gap:1.5rem;
+}
+.art-end-rule{width:100%;height:1px;background:var(--rule)}
+.art-end-code{font-family:var(--mono);font-size:9px;letter-spacing:0.18em;color:var(--fg3)}
+.art-end-nav{display:flex;justify-content:space-between;align-items:center}
+.art-end-back{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--fg3);
+  cursor:pointer;transition:color 0.12s;display:flex;align-items:center;gap:6px;
+}
+.art-end-back:hover{color:var(--fg)}
+.art-end-next{
+  font-family:var(--cond);font-weight:800;font-size:0.95rem;
+  text-transform:uppercase;letter-spacing:0.08em;cursor:pointer;
+  color:var(--fg2);transition:color 0.12s;text-align:right;
+}
+.art-end-next span{display:block;font-family:var(--mono);font-size:9px;font-weight:400;letter-spacing:0.12em;color:var(--fg3);margin-bottom:4px}
+.art-end-next:hover{color:var(--fg)}
+
+/* ── ABOUT ── */
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:80vh}
+.about-img{border-right:1px solid var(--rule);background:var(--bg3);overflow:hidden}
+.about-img img{height:100%;width:100%;object-fit:cover;opacity:0.75}
+.about-text{padding:5rem 3.5rem}
+.about-kicker{font-family:var(--mono);font-size:9px;letter-spacing:0.2em;color:var(--fg3);margin-bottom:2.5rem}
+.about-text h1{
+  font-family:var(--cond);font-weight:900;font-size:3.5rem;
+  text-transform:uppercase;letter-spacing:-0.01em;line-height:0.95;margin-bottom:3rem;
+}
+.about-text p{font-size:14px;color:var(--fg2);line-height:1.85;margin-bottom:1.25rem;max-width:480px}
+.about-text p strong{color:var(--fg);font-weight:400}
+.about-rule{border:none;border-top:1px solid var(--rule);margin:2.5rem 0}
+.ig-link{
+  font-family:var(--mono);font-size:10px;letter-spacing:0.15em;color:var(--fg3);
+  display:flex;align-items:center;gap:10px;
+  padding:0.9rem 0;border-bottom:1px solid var(--rule);transition:color 0.12s;
+}
+.ig-link:hover{color:var(--fg)}
+.ig-link::before{content:'↗';font-size:12px}
+
+/* ── SEARCH ── */
+.search-layer{display:none;background:var(--bg);padding:0}
+.search-layer.open{display:block}
+.search-box{
+  padding:3.5rem 2.5rem 2rem;border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:1.5rem;
+}
+.search-in{
+  flex:1;background:none;border:none;outline:none;
+  font-family:var(--cond);font-weight:900;font-size:2.5rem;
+  letter-spacing:0.02em;text-transform:uppercase;color:var(--fg);
+}
+.search-in::placeholder{color:var(--fg3)}
+.search-close{
+  font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--fg3);
+  padding:8px 16px;border:1px solid var(--rule);transition:color 0.12s,border-color 0.12s;
+}
+.search-close:hover{color:var(--fg);border-color:var(--fg3)}
+.search-results{padding:0 2.5rem}
+.sr-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.1rem 0;border-bottom:1px solid var(--rule);cursor:pointer;
+}
+.sr-item:hover .sr-title{color:var(--fg2)}
+.sr-title{font-family:var(--cond);font-weight:800;font-size:1.25rem;text-transform:uppercase;letter-spacing:0.04em;transition:color 0.12s;color:var(--fg)}
+.sr-meta{font-family:var(--mono);font-size:9px;color:var(--fg3);letter-spacing:0.1em;display:flex;gap:1.5rem}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--rule);padding:1.75rem 2.5rem;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--mono);font-size:9px;letter-spacing:0.15em;color:var(--fg3);
+  background:var(--bg);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .featured-section{grid-template-columns:1fr}
+  .featured-img{height:340px;border-right:none;border-bottom:1px solid var(--rule)}
+  .feed-grid{grid-template-columns:repeat(2,1fr)}
+  .art-split{grid-template-columns:1fr}
+  .art-split-img{height:300px}
+  .art-split.rev .art-split-img{order:0}
+  .art-split.rev .art-split-text{border-right:none;border-top:1px solid var(--rule)}
+  .art-split-text{border-left:none;border-top:1px solid var(--rule)}
+  .art-wide{grid-template-columns:1fr}
+  .art-wide-caption{border-left:none;border-top:1px solid var(--rule);height:auto}
+  .art-strip{grid-template-columns:1fr 1fr}
+  .about-wrap{grid-template-columns:1fr}
+  .about-img{display:none}
+  .nav-links{display:none}
+}
+@media(max-width:600px){
+  .cat-grid{grid-template-columns:1fr}
+  .feed-grid{grid-template-columns:repeat(3,1fr)}
+  .art-strip{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- SEARCH -->
+<div class="search-layer" id="searchLayer">
+  <div class="search-box">
+    <input class="search-in" type="text" placeholder="SEARCH THE ARCHIVE" id="searchIn" autocomplete="off"/>
+    <button class="search-close" onclick="closeSearch()">[ CLOSE ]</button>
+  </div>
+  <div class="search-results" id="searchRes"></div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">5EE ARCHIVE</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="nav('home')" id="nl-home" class="active">HOME</a></li>
+    <li><a href="#" onclick="nav('about')" id="nl-about">ABOUT</a></li>
+    <li><a href="#" onclick="showCat('ART')">ART</a></li>
+    <li><a href="#" onclick="showCat('PHOTOGRAPHY')">PHOTOGRAPHY</a></li>
+    <li><a href="#" onclick="showCat('MUSIC')">MUSIC</a></li>
+    <li><a href="#" onclick="showCat('CONFLICT & SOCIETY')">CONFLICT</a></li>
+    <li><a href="#" onclick="showCat('CULTURE')">CULTURE</a></li>
+    <li><a href="#" onclick="showCat('HISTORY')">HISTORY</a></li>
+  </ul>
+  <button class="nav-search-btn" onclick="openSearch()">
+    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="6.5" cy="6.5" r="5"/><line x1="10.5" y1="10.5" x2="15" y2="15"/></svg>
+    SEARCH
+  </button>
+</nav>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <section class="hero-quote">
+    <div class="hero-rule-top"></div>
+    <h1 class="hero-main">An archive of the<br/><em>human experience</em></h1>
+    <p class="hero-sub">Photography, art, music, history and the stories<br/>that connect them</p>
+    <div class="hero-rule-bot"></div>
+  </section>
+
+  <section class="cat-section">
+    <div class="cat-section-label">EXPLORE OUR STORIES</div>
+    <div class="cat-grid" id="catGrid"></div>
+  </section>
+
+  <section class="featured-section" id="featuredSection"></section>
+</div>
+
+<!-- CATEGORY FEED -->
+<div class="page" id="page-cat">
+  <div class="feed-header">
+    <div class="feed-header-left">
+      <button class="feed-back" onclick="nav('home')">← HOME</button>
+      <h1 class="feed-title" id="feedTitle"></h1>
+    </div>
+    <span class="feed-count" id="feedCount"></span>
+  </div>
+  <div class="feed-grid" id="feedGrid"></div>
+</div>
+
+<!-- ARTICLE -->
+<div class="page" id="page-article">
+  <div class="art-nav">
+    <button class="back-btn" onclick="goBack()">← BACK</button>
+    <span class="art-crumb">/</span>
+    <span class="art-crumb" id="artCrumb"></span>
+  </div>
+  <div class="art-layout" id="artLayout"></div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="about-wrap">
+    <div class="about-img">
+      <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=900&q=85" alt="" loading="lazy"/>
+    </div>
+    <div class="about-text">
+      <div class="about-kicker">ABOUT THE ARCHIVE</div>
+      <h1>Two<br/>Pages.<br/>One<br/>Archive.</h1>
+      <p><strong>5EE HEAVEN</strong> and <strong>5EE YOU IN HELL</strong> are Instagram archive pages documenting art, music, photography, conflict, culture, and history — things worth preserving, things that refuse to disappear quietly.</p>
+      <p>This website exists because the captions outgrew the platform. Every entry here is given the space it deserves — full articles, full context, full image sets.</p>
+      <p>The archive is not curated around a single aesthetic or ideology. It is curated around <strong>weight.</strong> What lasts. What haunts. What made someone reach for a camera, an instrument, a brush.</p>
+      <hr class="about-rule"/>
+      <a href="https://instagram.com/5eeheaven" class="ig-link" target="_blank">5EEHEAVEN ON INSTAGRAM</a>
+      <a href="https://instagram.com/5eeyouinhell" class="ig-link" target="_blank">5EEYOUINHELL ON INSTAGRAM</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>5EE ARCHIVE — ALL ENTRIES CATALOGUED</span>
+  <span>© HEAVEN / HELL</span>
+</footer>
+
+<script>
+const CATS = [
+  { id:'ART',               img:'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=900&q=85' },
+  { id:'CULTURE',           img:'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=900&q=85' },
+  { id:'HISTORY',           img:'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=900&q=85' },
+  { id:'MUSIC',             img:'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=900&q=85' },
+  { id:'PHOTOGRAPHY',       img:'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=900&q=85' },
+  { id:'CONFLICT & SOCIETY',img:'https://images.unsplash.com/photo-1548783300-a007ef6fd5df?w=900&q=85' },
+];
+
+const ARTICLES = [
+  {
+    id:'5EH-0001', cat:'PHOTOGRAPHY',
+    title:'The Last Photographs of a City Before It Burned',
+    excerpt:'In the weeks before the fall, photographers moved through the streets documenting what they feared they would never see again.',
+    date:'2024', rt:'8 MIN',
+    imgs:[
+      'https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=1400&q=90',
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+      'https://images.unsplash.com/photo-1493612276216-ee3925520721?w=900&q=85',
+      'https://images.unsplash.com/photo-1533856493584-0c6ca8ca9ce3?w=900&q=85',
+    ],
+    sections:[
+      { type:'text', content:`There is a particular kind of photograph that only gets made when the photographer knows, with certainty, that they are seeing something for the last time. The shutter becomes a form of mourning. The camera, a vessel for grief that hasn't happened yet.\n\nIn the months before the city fell, a handful of photographers moved through it with that awareness — documenting markets, doorways, faces of people who hadn't yet decided to leave. The photographs are unremarkable in the way that all documentation of ordinary life is unremarkable, until the ordinary life ends.` },
+      { type:'pull', content:'THE SHUTTER BECOMES <em>A FORM OF MOURNING.</em>' },
+      { type:'split', img:1, heading:'What the archive preserves', content:`We tend to think of war photography as the images of the conflict itself — the smoke, the rubble, the iconic suffering. But the deeper archive is made of the before. The photographs taken by people who could see what was coming and pointed their lenses at normalcy anyway.\n\nA man selling bread. A child's shoes left outside a door. A wall with paint peeling in a particular way that nobody would have photographed if it were not about to cease existing.` },
+      { type:'quote', content:'To photograph is to appropriate the thing photographed. It means putting yourself in a certain relation to the world that feels like knowledge — and, therefore, like power. — Susan Sontag' },
+      { type:'strip', imgs:[1,2,3] },
+      { type:'text', content:`The photographers working in those weeks were not appropriating power. They were doing something more desperate — trying to make a record that someone, somewhere, might one day use to remember that the city existed before it became a symbol of destruction.\n\nEvery archive begins with the assumption that the future will want to know. The archive of the ordinary is always the archive of what was lost.` },
+    ]
+  },
+  {
+    id:'5EI-0012', cat:'MUSIC',
+    title:'When Punk Became Product: A Eulogy',
+    excerpt:'Somewhere between the Ramones and a streaming algorithm, the idea of music as refusal became music as content.',
+    date:'2024', rt:'6 MIN',
+    imgs:[
+      'https://images.unsplash.com/photo-1563841930606-67e2bce48b78?w=1400&q=90',
+      'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=900&q=85',
+      'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=900&q=85',
+    ],
+    sections:[
+      { type:'text', content:`There is a version of punk that exists now only as aesthetic — the ripped jacket, the safety pin, the sneer — sold by fast fashion brands at affordable prices, stripped of every value that made those objects mean something in the first place.\n\nThe aesthetic survived. The hostility did not. And without the hostility, it is just a costume.` },
+      { type:'pull', content:'THE AESTHETIC SURVIVED. <em>THE HOSTILITY DID NOT.</em>' },
+      { type:'split', img:1, heading:'What punk was actually refusing', content:`Punk was not refusing polish or production values for their own sake. It was refusing the idea that music required institutional permission. The DIY ethic was not aesthetic; it was structural. It was a way of saying: we do not need you to exist.\n\nThat refusal has been absorbed. The institutions punk refused have built their own version of the DIY pipeline.` },
+      { type:'quote', content:"Rock and roll is about the moment when somebody loses control of themselves — and in doing so, is entirely present. That's what's been lost. — Nick Cave" },
+      { type:'wide', img:2, caption:'A small label recording session, 2019. The room holds maybe twenty people.' },
+    ]
+  },
+  {
+    id:'5EH-0023', cat:'ART',
+    title:'Francis Bacon and the Problem of Painting Screams',
+    excerpt:'He was obsessed with the human mouth not as speech but as pure involuntary sound — the cry that exists before language.',
+    date:'2023', rt:'7 MIN',
+    imgs:[
+      'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=1400&q=90',
+      'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=900&q=85',
+      'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=900&q=85',
+    ],
+    sections:[
+      { type:'text', content:`Francis Bacon kept a reproduction of Eisenstein's screaming nurse from Battleship Potemkin pinned to his studio wall for decades. He never directly painted from it. But it haunted everything he made.\n\nWhat obsessed him was not the image's narrative content but a purely formal problem: how do you paint a sound? More specifically, how do you paint a scream in a medium that is fundamentally silent?` },
+      { type:'pull', content:'HOW DO YOU <em>PAINT A SOUND?</em>' },
+      { type:'split', img:1, heading:'The open mouth as subject', content:`Bacon's mouths are often the most carefully rendered elements in his otherwise deliberately distorted canvases. While faces dissolve, the mouth — open, screaming, or about to scream — remains specific, precise, almost clinical in its detail.\n\nThis inversion is what makes the paintings so disturbing. The dissolution of identity makes the emotional core more visible, not less.` },
+      { type:'quote', content:'I wanted to paint the scream more than the horror. — Francis Bacon' },
+      { type:'strip', imgs:[1,2] },
+      { type:'text', content:`Bacon was suspicious of narrative in painting. He wanted to work directly on the nervous system — to bypass the storytelling brain and arrive at sensation first, meaning later, if at all. The scream was the perfect subject for this because a scream resists interpretation.` },
+    ]
+  },
+  {
+    id:'5EI-0008', cat:'CONFLICT & SOCIETY',
+    title:'The Photographers Who Stayed',
+    excerpt:'When most journalists evacuated, a handful remained — not out of bravery but because they could not imagine doing anything else.',
+    date:'2024', rt:'9 MIN',
+    imgs:[
+      'https://images.unsplash.com/photo-1585776245991-cf89dd7fc73a?w=1400&q=90',
+      'https://images.unsplash.com/photo-1578926375605-eaf7559b1458?w=900&q=85',
+      'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=85',
+    ],
+    sections:[
+      { type:'text', content:`The question people always ask war photographers is some version of: how do you keep taking pictures? How do you not put the camera down and help? It is a question that assumes the two things are opposed — that bearing witness and acting are in competition.` },
+      { type:'pull', content:'BEARING WITNESS <em>IS NOT INACTION.</em>' },
+      { type:'split', img:1, heading:'The weight of staying', content:`The photographers who stay past the point of personal safety are not reckless. They are people who have made a calculation about what their presence means — what the images they make will do in the world, how they will move through institutions and eventually into archives as evidence of what happened here, to these people.` },
+      { type:'quote', content:'Photography is an act of non-intervention. The person who intervenes cannot record; the person who records cannot intervene. — Susan Sontag' },
+    ]
+  },
+  {
+    id:'5EH-0034', cat:'MUSIC',
+    title:"Nina Simone's Anger as Instrument",
+    excerpt:'She did not manage her rage or moderate it for palatability. She played it — turned it into sound and demanded you listen.',
+    date:'2023', rt:'5 MIN',
+    imgs:[
+      'https://images.unsplash.com/photo-1510915361894-db8b60106cb1?w=1400&q=90',
+      'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=900&q=85',
+    ],
+    sections:[
+      { type:'text', content:`There is a live recording of Nina Simone performing Mississippi Goddam in which you can hear the audience laugh at the opening lines — an uncomfortable, nervous laugh. Simone does not pause. She proceeds, and the laugh dies, and the room is silent in a different way than it was before.` },
+      { type:'pull', content:'SHE PLAYED HER RAGE — <em>AND DEMANDED YOU LISTEN.</em>' },
+      { type:'split', img:1, heading:'Music as political act', content:`Simone made the calculation — conscious, not impulsive — that her music would not be separate from her politics. The stage was not a place of escape from the world but a place of confrontation with it. This cost her commercially. She was aware of the cost. She proceeded anyway.` },
+      { type:'quote', content:"You can't help it. An artist's duty, as far as I'm concerned, is to reflect the times. — Nina Simone" },
+    ]
+  },
+  {
+    id:'5EI-0019', cat:'HISTORY',
+    title:'The Brutalist Ruins We Chose Not to Preserve',
+    excerpt:'When we demolish brutalist buildings we are not removing eyesores. We are erasing a record of what a society once believed about the future.',
+    date:'2024', rt:'6 MIN',
+    imgs:[
+      'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&q=90',
+      'https://images.unsplash.com/photo-1558618047-3c8c76ca6e3d?w=900&q=85',
+      'https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?w=900&q=85',
+    ],
+    sections:[
+      { type:'text', content:`Brutalism is the architecture of optimism that we have decided to call the architecture of ugliness. The misreading is almost total. Buildings designed to house people with dignity — to say, with concrete and mass and light, that the people who lived here deserved permanence — are now understood as symbols of the political projects that failed around them.` },
+      { type:'pull', content:'WE DEMOLISH THEM AND SAY WE ARE REMOVING BLIGHT. <em>WHAT WE ARE REMOVING IS EVIDENCE.</em>' },
+      { type:'split', img:1, heading:'The photography of the condemned', content:`There is an entire subgenre devoted to brutalist buildings on the verge of demolition — not ruin photography, not nostalgia, but something more urgent. Photographers arriving knowing they have weeks or months. Trying to capture something about the relationship between the building and the light.` },
+      { type:'strip', imgs:[1,2] },
+    ]
+  },
+  {
+    id:'5EH-0041', cat:'CULTURE',
+    title:'The Archive as Act of Defiance',
+    excerpt:'Every archive is a political act. The decision about what is worth preserving encodes an entire ideology about whose lives and stories matter.',
+    date:'2024', rt:'7 MIN',
+    imgs:[
+      'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1400&q=90',
+      'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=900&q=85',
+    ],
+    sections:[
+      { type:'text', content:`Every archive begins with a decision about what matters. That decision is never neutral. The national archives of any country encode a set of assumptions about whose stories are worth preserving, whose voices are worth recording.` },
+      { type:'pull', content:'THE ARCHIVE IS ALWAYS POLITICAL. <em>THERE IS NO NEUTRAL RECORD.</em>' },
+      { type:'split', img:1, heading:'Who decides what endures', content:`The digital archive has changed this in complicated ways. The sheer volume of what can now be recorded has not made the archive more democratic — it has made the curation problem more acute. Someone still decides what gets indexed, what gets surfaced, what gets preserved when the platform shuts down.` },
+    ]
+  },
+  {
+    id:'5EI-0027', cat:'ART',
+    title:"Goya in the Dark: The Black Paintings as Final Statement",
+    excerpt:'Painted directly onto the walls of his own house, visible to no one, the Black Paintings are the closest a major artist has come to making work purely for himself.',
+    date:'2023', rt:'8 MIN',
+    imgs:[
+      'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1400&q=90',
+      'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=900&q=85',
+    ],
+    sections:[
+      { type:'text', content:`Francisco Goya painted Saturn Devouring His Son directly onto the plaster wall of his dining room. He was deaf, in his seventies, in voluntary exile outside Madrid. He had no commission. He had no audience. The walls of his home were covered in images of violence and grief that he made for nobody but himself.` },
+      { type:'pull', content:'AN AUDIENCE OF ONE. <em>THE MOST RADICAL ACT IN ART HISTORY.</em>' },
+      { type:'split', img:1, heading:'The Black Paintings as confession', content:`Art history has never quite known what to do with the Black Paintings because they resist the normal frameworks — influence, reception, legacy. They were not made to be seen. They were made to be lived with, in a house, by one person who had seen too much and needed to put it somewhere.` },
+      { type:'quote', content:'Fantasy abandoned by reason produces impossible monsters; united with her, she is the mother of the arts. — Francisco Goya' },
+    ]
+  },
+];
+
+let prevPage = 'home';
+let currentPage = 'home';
+let currentCat = '';
+let currentArticleId = '';
+
+function renderCats() {
+  const counts = {};
+  ARTICLES.forEach(a => { counts[a.cat] = (counts[a.cat]||0)+1; });
+  document.getElementById('catGrid').innerHTML = CATS.map(c => `
+    <div class="cat-card" onclick="showCat('${c.id}')">
+      <div class="cat-card-img"><img src="${c.img}" alt="${c.id}" loading="lazy"/></div>
+      <div class="cat-card-body">
+        <span class="cat-pill">${c.id}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderFeatured() {
+  const a = ARTICLES[0];
+  document.getElementById('featuredSection').innerHTML = `
+    <div class="featured-img">
+      <img src="${a.imgs[0]}" alt="${a.title}" loading="lazy"/>
+    </div>
+    <div class="featured-text">
+      <div class="featured-label">FEATURED STORY</div>
+      <div class="featured-body">
+        <div class="featured-code">${a.id}</div>
+        <span class="featured-cat">${a.cat}</span>
+        <div class="featured-title" onclick="openArticle('${a.id}')">${a.title}</div>
+        <p class="featured-excerpt">${a.excerpt}</p>
+      </div>
+      <div class="featured-meta">
+        <span>${a.date}</span><span>${a.rt} READ</span>
+        <button class="featured-read-btn" onclick="openArticle('${a.id}')">READ ENTRY →</button>
+      </div>
+    </div>
+  `;
+}
+
+function showCat(cat) {
+  prevPage = currentPage;
+  currentCat = cat;
+  const list = ARTICLES.filter(a => a.cat === cat);
+  document.getElementById('feedTitle').textContent = cat;
+  document.getElementById('feedCount').textContent = list.length + (list.length===1?' ENTRY':' ENTRIES');
+  document.getElementById('feedGrid').innerHTML = list.map(a => `
+    <div class="feed-tile" onclick="openArticle('${a.id}')">
+      <img src="${a.imgs[0]}" alt="${a.title}" loading="lazy"/>
+      <div class="feed-tile-overlay">
+        <div class="feed-tile-title">${a.title}</div>
+      </div>
+    </div>
+  `).join('');
+  nav('cat');
+}
+
+function buildArticle(a) {
+  let html = '';
+  html += `<div class="art-hero-img"><img src="${a.imgs[0]}" alt="${a.title}" loading="lazy"/><span class="art-hero-caption">${a.id} — ${a.cat}</span></div>`;
+  html += `<div class="art-title-block"><div class="art-code">${a.id}</div><h1 class="art-title">${a.title}</h1><div class="art-meta-row"><span class="art-tag">${a.cat}</span><span class="art-meta-item">${a.date}</span><span class="art-meta-item">${a.rt} READ</span></div></div>`;
+
+  a.sections.forEach(s => {
+    if (s.type === 'text') {
+      const paras = s.content.split('\n\n').map(p => `<p>${p}</p>`).join('');
+      html += `<div class="art-text-block">${paras}</div>`;
+    } else if (s.type === 'pull') {
+      html += `<div class="art-pull"><div class="art-pull-text">${s.content}</div></div>`;
+    } else if (s.type === 'split') {
+      html += `<div class="art-split"><div class="art-split-img"><img src="${a.imgs[s.img]||a.imgs[0]}" alt="" loading="lazy"/></div><div class="art-split-text"><h2>${s.heading}</h2>${s.content.split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div></div>`;
+    } else if (s.type === 'split-rev') {
+      html += `<div class="art-split rev"><div class="art-split-img"><img src="${a.imgs[s.img]||a.imgs[0]}" alt="" loading="lazy"/></div><div class="art-split-text"><h2>${s.heading}</h2>${s.content.split('\n\n').map(p=>`<p>${p}</p>`).join('')}</div></div>`;
+    } else if (s.type === 'quote') {
+      html += `<div class="art-text-block"><blockquote>${s.content}</blockquote></div>`;
+    } else if (s.type === 'strip') {
+      const imgs = s.imgs.map(i => a.imgs[i]||a.imgs[0]);
+      html += `<div class="art-strip">${imgs.map(src=>`<div class="art-strip-img"><img src="${src}" alt="" loading="lazy"/></div>`).join('')}</div>`;
+    } else if (s.type === 'wide') {
+      html += `<div class="art-wide"><div class="art-wide-img"><img src="${a.imgs[s.img]||a.imgs[0]}" alt="" loading="lazy"/></div><div class="art-wide-caption"><p>${s.caption}</p></div></div>`;
+    }
+  });
+
+  const next = ARTICLES.find(x => x.cat===a.cat && x.id!==a.id);
+  html += `<div class="art-closing"><img src="${a.imgs[a.imgs.length-1]}" alt="" loading="lazy"/></div>`;
+  html += `<div class="art-end"><div class="art-end-rule"></div><div class="art-end-code">${a.id} — END OF ENTRY</div><div class="art-end-nav"><button class="art-end-back" onclick="goBack()">← BACK TO ${a.cat}</button>${next?`<div class="art-end-next" onclick="openArticle('${next.id}')"><span>NEXT ENTRY</span>${next.title}</div>`:''}</div></div>`;
+  return html;
+}
+
+function openArticle(id) {
+  const a = ARTICLES.find(x => x.id===id);
+  if (!a) return;
+  prevPage = currentPage;
+  currentArticleId = id;
+  document.getElementById('artCrumb').textContent = a.id + ' — ' + a.title.substring(0,50);
+  document.getElementById('artLayout').innerHTML = buildArticle(a);
+  nav('article');
+  window.scrollTo(0,0);
+}
+
+function goBack() {
+  if (prevPage === 'cat' || currentCat) {
+    showCat(currentCat || ARTICLES.find(x=>x.id===currentArticleId)?.cat);
+  } else {
+    nav('home');
+  }
+}
+
+function nav(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const el = document.getElementById('nl-'+page);
+  if (el) el.classList.add('active');
+  currentPage = page;
+}
+
+function openSearch() {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('searchLayer').classList.add('open');
+  document.getElementById('searchIn').value='';
+  renderSearch('');
+  setTimeout(()=>document.getElementById('searchIn').focus(),50);
+}
+function closeSearch() {
+  document.getElementById('searchLayer').classList.remove('open');
+  document.getElementById('page-'+currentPage).classList.add('active');
+}
+function renderSearch(q) {
+  const list = q ? ARTICLES.filter(a =>
+    a.title.toLowerCase().includes(q.toLowerCase()) ||
+    a.cat.toLowerCase().includes(q.toLowerCase()) ||
+    a.excerpt.toLowerCase().includes(q.toLowerCase())
+  ) : ARTICLES;
+  document.getElementById('searchRes').innerHTML = list.map(a => `
+    <div class="sr-item" onclick="closeSearch();openArticle('${a.id}')">
+      <span class="sr-title">${a.title}</span>
+      <div class="sr-meta"><span>${a.id}</span><span>${a.cat}</span><span>${a.date}</span></div>
+    </div>
+  `).join('');
+}
+document.getElementById('searchIn').addEventListener('input', e => renderSearch(e.target.value));
+document.addEventListener('keydown', e => {
+  if (e.key==='Escape' && document.getElementById('searchLayer').classList.contains('open')) closeSearch();
+});
+
+renderCats();
+renderFeatured();
+</script>
+</body>
+</html>
