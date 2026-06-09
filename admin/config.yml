@@ -1,1 +1,25 @@
+backend:
+  name: git-gateway
+  branch: main
 
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "articles"
+    label: "Articles"
+    folder: "_articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Archive Code", name: "id", widget: "string", hint: "e.g. 5EH-0042" }
+      - label: "Category"
+        name: "cat"
+        widget: "select"
+        options: ["ART", "PHOTOGRAPHY", "CULTURE", "CONFLICT & SOCIETY", "MUSIC", "HISTORY"]
+      - { label: "Date", name: "date", widget: "string", hint: "e.g. 2024" }
+      - { label: "Read Time", name: "rt", widget: "string", hint: "e.g. 6 MIN" }
+      - { label: "Excerpt", name: "excerpt", widget: "text" }
+      - { label: "Hero Image", name: "hero_image", widget: "image" }
+      - { label: "Body", name: "body", widget: "markdown" }
